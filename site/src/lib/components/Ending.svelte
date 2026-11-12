@@ -15,15 +15,20 @@
 
 <section class="ending">
   <div class="text">
-    <h2>What the data can’t show</h2>
+    <h2>So where do the bikes go?</h2>
     <p>
-      The data only has completed trips. If someone found an empty station, or a full one with nowhere to dock, and
-      went elsewhere, there’s no record of it.
+      Toward the center in the morning, and back out in the evening. Chicago’s Divvy trips follow a rhythm set by the
+      weekday, and the neighborhoods that send riders downtown at 8 am are mostly the ones receiving them again at 5.
     </p>
     <p>
-      What it does show is a rhythm: the same neighborhoods take in trips in the morning and send them out in the
-      evening, day after day.
+      A rhythm like that is a challenge for any shared system: the stations that receive trips in the morning are
+      usually the ones sending them out by evening, so demand for bikes keeps shifting across the map.
     </p>
+    <p class="caveat">
+      The data records completed trips, not bikes on a dock. It can’t show the moment a station ran out of bikes, or
+      a rider who gave up and walked away. But it does show where the next rush is likely to come from.
+    </p>
+    <p class="last">The city keeps moving, and the bikes have to be ready for wherever it goes next.</p>
   </div>
   <div class="dock"><IllustrationSlot id="dock" fit="contain" quiet /></div>
 
@@ -102,7 +107,11 @@
     aspect-ratio: 1300 / 1241;
     margin: 3rem 0 3.5rem 50%;
     transform: translateX(-50%);
+    /* An evening glow, so the closing scene echoes the sunrise that opened the page. */
+    background: radial-gradient(ellipse 70% 55% at 50% 62%, rgba(240, 160, 110, 0.35), rgba(120, 130, 190, 0.12) 60%, transparent 80%);
   }
+  .caveat { font-size: 1rem; color: var(--ink-soft); }
+  .last { font-weight: 700; font-size: 1.3rem; margin-top: 1.6rem; }
 
   .more { border-top: 1px solid var(--rule); padding: 0.9rem 0; font-size: 1rem; }
   .more:last-of-type { border-bottom: 1px solid var(--rule); }

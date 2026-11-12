@@ -14,11 +14,12 @@
 
   <section class="opening">
     <p>
-      Before the sun clears the buildings, thousands of people in Chicago are already on Divvy bikes.
+      Every morning, Chicago begins to move. People leave their neighborhoods, head toward work and make their way
+      across the city.
     </p>
     <p>
-      This is a year of those trips, October 2025 to September 2026, about six million in all. Scroll to see where
-      they go.
+      Beneath the rhythm of the commute, there’s a pattern. A year of Divvy trips, about six million of them from
+      October 2025 to September 2026, shows where the city goes and when.
     </p>
   </section>
 
