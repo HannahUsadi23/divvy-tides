@@ -1,0 +1,60 @@
+:root {
+  --paper: #f6f1e7;
+  --paper-deep: #ece4d4;
+  --ink: #1d2433;
+  --ink-soft: #55607a;
+  --ink-faint: #6b7389;
+  --rule: #d9cfbb;
+
+  /* The tide: blue where a station receives more trips than it sends, coral where it sends more.
+     Tested against protanopia, deuteranopia and tritanopia, and for 3:1 contrast on the map.
+     Plain activity is magenta, so blue and coral only appear when they carry the tide. */
+  --inflow: #0b4f7a;
+  --outflow: #d8502a;
+  --activity: #b5307f;
+
+  --night: #121a33;
+  --dawn: #f2b27a;
+
+  --serif: 'Charter', 'Iowan Old Style', 'Palatino Linotype', Georgia, serif;
+  --sans: system-ui, -apple-system, 'Segoe UI', sans-serif;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--serif);
+  font-size: 1.125rem;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3 { font-weight: 700; line-height: 1.12; margin: 0; letter-spacing: -0.01em; }
+p { margin: 0 0 1em; }
+button { font: inherit; color: inherit; }
+
+:focus-visible {
+  outline: 3px solid var(--inflow);
+  outline-offset: 2px;
+}
+
+.visually-hidden {
+  position: absolute !important;
+  width: 1px; height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

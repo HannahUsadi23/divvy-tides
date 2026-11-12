@@ -1,0 +1,35 @@
+# Dependencies and build output
+node_modules/
+dist/
+site/dist/
+site/node_modules/
+
+# Raw Divvy trip data (hundreds of MB; download from divvybikes.com/system-data)
+raw_data/
+*-divvy-tripdata.csv
+*-divvy-tripdata.zip
+divvy_trips*.csv
+
+# Full-size original artwork (web-sized copies are in site/public/illustrations)
+drawings/
+
+# Earlier coursework notebook and report
+divvy_ridership_analysis.*
+
+# Local caches and environment files
+pipeline/cache/
+pipeline/__pycache__/
+__pycache__/
+*.pyc
+.venv/
+.env
+.env.*
+!.env.example
+.vercel/
+
+# Logs and OS/editor files
+*.log
+.DS_Store
+.idea/
+.vscode/*
+!.vscode/extensions.json
