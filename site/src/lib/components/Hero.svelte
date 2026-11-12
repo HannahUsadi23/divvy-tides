@@ -74,7 +74,7 @@
     <div class="title" style="opacity: {1 - dissolve * 0.9}">
       <p class="kicker">Data story</p>
       <h1>Where Do Chicago’s Divvy Bikes Go?</h1>
-      <p class="deck">A year of Divvy trips shows a tide moving through the city every weekday.</p>
+      <p class="deck">Every weekday, a tide of bike trips moves through the city.</p>
       <p class="byline">By Hannah Usadi</p>
     </div>
     <p class="cue" style="opacity: {1 - scroll * 3}" aria-hidden="true">Scroll</p>

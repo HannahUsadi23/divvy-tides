@@ -17,18 +17,12 @@
   <div class="text">
     <h2>What the data can’t show</h2>
     <p>
-      Everything here comes from completed trips. Divvy records where a ride started and where it ended, but not
-      the times someone walked up to an empty station, or found a full one with nowhere to dock, and went another
-      way. Those moments leave no trace in the data.
+      The data only has completed trips. If someone found an empty station, or a full one with nowhere to dock, and
+      went elsewhere, there’s no record of it.
     </p>
     <p>
-      That’s why this is a tide of trips and not of bicycles. About one trip in five has no starting station on
-      record, and Divvy’s crews move bikes around on their own schedule.
-    </p>
-    <p>
-      What the data does show is a rhythm: the same parts of the city take in trips in the morning and send them
-      out in the evening, day after day. Knowing the rhythm is a start toward anticipating it, but it isn’t the
-      same as knowing who was left waiting.
+      What it does show is a rhythm: the same neighborhoods take in trips in the morning and send them out in the
+      evening, day after day.
     </p>
   </div>
   <div class="dock"><IllustrationSlot id="dock" fit="contain" quiet /></div>

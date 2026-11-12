@@ -14,14 +14,11 @@
 
   <section class="opening">
     <p>
-      Most mornings, the first Divvy trips of the day start while it’s still dark out. By the time the sun clears
-      the buildings, thousands of people are already on their way somewhere.
+      Before the sun clears the buildings, thousands of people in Chicago are already on Divvy bikes.
     </p>
     <p>
-      Divvy records every one of those trips: where it started, where it ended and when. We looked at a year of
-      them, October 2025 through September 2026, about six million in all. The title is the question we started
-      with. What the data can actually answer is narrower, where the trips go, but that turns out to be interesting
-      enough.
+      This is a year of those trips, October 2025 to September 2026, about six million in all. Scroll to see where
+      they go.
     </p>
   </section>
 
