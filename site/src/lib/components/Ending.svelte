@@ -104,7 +104,7 @@
   /* Larger than the text column, but never taller than the screen. */
   .dock {
     width: min(94vw, 56rem, 92vh);
-    aspect-ratio: 1300 / 1241;
+    aspect-ratio: 1300 / 1185;
     margin: 3rem 0 3.5rem 50%;
     transform: translateX(-50%);
     /* An evening glow, so the closing scene echoes the sunrise that opened the page. */

@@ -27,7 +27,7 @@ export const illustrations = {
 
   dock: {
     file: 'dock.webp',
-    ratio: '1300 / 1241',
+    ratio: '1300 / 1185',
     alt: 'Three light-blue Divvy bikes parked at a Divvy dock.',
     brief: 'Your Divvy dock with bikes. Transparent background.',
   },

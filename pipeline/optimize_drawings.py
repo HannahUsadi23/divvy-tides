@@ -61,7 +61,7 @@ def main():
     save(biker.crop(box), "foreground.webp", 1100)
 
     # The dock: trim empty margin like the rider; accept either file name.
-    for name in ("bikeDock.png", "divvyDock.png", "dock.png"):
+    for name in ("bikeDivvyDockUpdated.png", "bikeDock.png", "divvyDock.png", "dock.png"):
         if (SRC / name).exists():
             dock = Image.open(SRC / name).convert("RGBA")
             x0, y0, x1, y1 = opaque_box(dock)
