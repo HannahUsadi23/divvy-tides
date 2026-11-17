@@ -17,25 +17,24 @@
   <div class="text">
     <h2>So where do the bikes go?</h2>
     <p>
-      In the morning, Divvy trips tend to flow toward the center of Chicago. By evening, the direction reverses.
-      Among stations with substantial morning and evening imbalances (at least {m.stats.tide.flipMinTrips} trips each
-      way over the year), {percent(m.stats.tide.flipShare)} switch from receiving more trips to sending more, or vice
-      versa.
+      In the morning, more Divvy trips end downtown than begin there. In the evening, the opposite happens. Across
+      stations with substantial changes in both periods (at least {m.stats.tide.flipMinTrips} trips over the year),
+      {percent(m.stats.tide.flipShare)} reverse direction.
     </p>
     <p>
-      It’s a remarkably consistent pattern, and one that creates a challenge for a shared-bike system: where people
-      begin their rides isn’t always where they finish them.
+      For Divvy, that creates a practical challenge. Bikes are picked up and dropped off in different places, and
+      those patterns change throughout the day.
     </p>
     <p class="caveat">
-      Of course, there’s more to the story than the trips themselves. The data doesn’t tell us how many bikes are
-      available at any station, whether someone tried and failed to rent one, or how Divvy crews move bikes around the
-      city.
+      The trip records don’t tell us how many bikes were available at a station, how many people tried to rent one and
+      couldn’t, or when crews stepped in to redistribute them. So while the data shows where trips happen, it can’t
+      tell us whether Divvy is keeping up.
     </p>
     <p>
-      But it does reveal the rhythm behind millions of individual rides. Every weekday, Chicago sends people across
-      the city, and by evening, much of that movement reverses.
+      I started looking at this data because I wanted to understand the system I’ve spent so much time riding around
+      on. It turns out the morning and evening commutes are surprisingly predictable.
     </p>
-    <p class="last">And somewhere along the way, there’s probably someone circling the block looking for an empty dock.</p>
+    <p class="last">Finding an empty dock when I’m already late is another matter.</p>
   </div>
   <div class="dock"><IllustrationSlot id="dock" fit="contain" quiet /></div>
 

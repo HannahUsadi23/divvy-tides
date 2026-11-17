@@ -34,7 +34,7 @@
     </p>
     <p>
       From October 2025 to September 2026, Divvy recorded roughly six million completed rides. Together, they reveal
-      a pattern in how Chicago moves that I never noticed while pedaling through it.
+      patterns I hadn’t noticed while riding through the city myself.
     </p>
   </section>
 
