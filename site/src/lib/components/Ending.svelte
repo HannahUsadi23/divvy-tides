@@ -3,7 +3,7 @@
   // as an accessible alternative to the visualization.
   import IllustrationSlot from './IllustrationSlot.svelte'
   import { topStations } from '../data.js'
-  import { number } from '../format.js'
+  import { number, percent } from '../format.js'
 
   let { data } = $props()
 
@@ -17,18 +17,25 @@
   <div class="text">
     <h2>So where do the bikes go?</h2>
     <p>
-      Toward the center in the morning, and back out in the evening. Chicago’s Divvy trips follow a rhythm set by the
-      weekday, and the neighborhoods that send riders downtown at 8 am are mostly the ones receiving them again at 5.
+      In the morning, Divvy trips tend to flow toward the center of Chicago. By evening, the direction reverses.
+      Among stations with substantial morning and evening imbalances (at least {m.stats.tide.flipMinTrips} trips each
+      way over the year), {percent(m.stats.tide.flipShare)} switch from receiving more trips to sending more, or vice
+      versa.
     </p>
     <p>
-      A rhythm like that is a challenge for any shared system: the stations that receive trips in the morning are
-      usually the ones sending them out by evening, so demand for bikes keeps shifting across the map.
+      It’s a remarkably consistent pattern, and one that creates a challenge for a shared-bike system: where people
+      begin their rides isn’t always where they finish them.
     </p>
     <p class="caveat">
-      The data records completed trips, not bikes on a dock. It can’t show the moment a station ran out of bikes, or
-      a rider who gave up and walked away. But it does show where the next rush is likely to come from.
+      Of course, there’s more to the story than the trips themselves. The data doesn’t tell us how many bikes are
+      available at any station, whether someone tried and failed to rent one, or how Divvy crews move bikes around the
+      city.
     </p>
-    <p class="last">The city keeps moving, and the bikes have to be ready for wherever it goes next.</p>
+    <p>
+      But it does reveal the rhythm behind millions of individual rides. Every weekday, Chicago sends people across
+      the city, and by evening, much of that movement reverses.
+    </p>
+    <p class="last">And somewhere along the way, there’s probably someone circling the block looking for an empty dock.</p>
   </div>
   <div class="dock"><IllustrationSlot id="dock" fit="contain" quiet /></div>
 

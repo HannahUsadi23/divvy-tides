@@ -14,12 +14,27 @@
 
   <section class="opening">
     <p>
-      Every morning, Chicago begins to move. People leave their neighborhoods, head toward work and make their way
-      across the city.
+      I knew I had a Divvy problem when I showed up to a date at a cute French café 25 minutes late, drenched in
+      sweat, after biking to six different stations in search of an empty dock.
     </p>
     <p>
-      Beneath the rhythm of the commute, there’s a pattern. A year of Divvy trips, about six million of them from
-      October 2025 to September 2026, shows where the city goes and when.
+      When I moved from Atlanta to Chicago, one of the first things I did was trade my car for a bike. I spent that
+      first summer flying around the city on Divvys, getting to know Chicago one docking station at a time. I even
+      rode one in Critical Mass, a massive group bike ride through the city, and racked up a $40 charge along the
+      way.
+    </p>
+    <p>
+      I’ve spent countless hours hunting for empty docks, and slightly fewer hunting for bikes when I’m running late.
+      I’ve come to think of Chicago less as a collection of neighborhoods and more as a network of places where I can
+      theoretically return a bicycle.
+    </p>
+    <p>
+      But while I was circling the block looking for somewhere to park, millions of other people were making their own
+      trips across the city.
+    </p>
+    <p>
+      From October 2025 to September 2026, Divvy recorded roughly six million completed rides. Together, they reveal
+      a pattern in how Chicago moves that I never noticed while pedaling through it.
     </p>
   </section>
 

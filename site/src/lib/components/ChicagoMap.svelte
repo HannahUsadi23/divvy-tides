@@ -103,13 +103,23 @@
     }
   }
 
+  const fitLogk = (v) => {
+    const pad = Math.min(w, h) * 0.04 + 8
+    return Math.log(Math.min((w - 2 * pad) / (v.x1 - v.x0), (h - 2 * pad) / (v.y1 - v.y0)))
+  }
+
+  // A view the reader has panned or zoomed to; null means "follow the story".
+  let userCam = null
+
   function setCameraTarget() {
     const v = views[zoom]
-    const pad = Math.min(w, h) * 0.04 + 8
-    const k = Math.min((w - 2 * pad) / (v.x1 - v.x0), (h - 2 * pad) / (v.y1 - v.y0))
-    camTarget.logk = Math.log(k)
-    camTarget.cx = (v.x0 + v.x1) / 2
-    camTarget.cy = (v.y0 + v.y1) / 2
+    if (userCam) {
+      Object.assign(camTarget, userCam)
+    } else {
+      camTarget.logk = fitLogk(v)
+      camTarget.cx = (v.x0 + v.x1) / 2
+      camTarget.cy = (v.y0 + v.y1) / 2
+    }
     if (!camReady || reduceMotion) {
       camReady = true
       Object.assign(cam, camTarget)
@@ -178,6 +188,7 @@
   $effect(() => {
     if (!w || !h) return
     zoom
+    userCam = null
     setCameraTarget()
     start()
   })
@@ -203,25 +214,142 @@
   }
 
   // Hover and tap: one pointer handler plus a Delaunay lookup instead of ~1,900 listeners.
+  // Pan and pinch only work in explore mode, so ordinary touches keep scrolling the page.
   let svgEl
   let boxEl
   let hovered = $state(null)
   let tip = $state({ x: 0, y: 0, left: false })
+  let explore = $state(false)
+  let zoomed = $state(false)
+  const pointers = new Map()
+  let gesture = null
 
-  function onPointer(e) {
+  function inspect(e) {
     const box = svgEl.getBoundingClientRect()
     const px = e.clientX - box.left
     const py = e.clientY - box.top
     const k = scaleNow(0)
     const i = delaunay.find((px - shiftX(0)) / k, (py - shiftY(0)) / k)
     const dist = Math.hypot(pos[i][0] * k + shiftX(0) - px, pos[i][1] * k + shiftY(0) - py)
-    if (dist > 14) {
+    if (dist > (e.pointerType === 'touch' ? 24 : 14)) {
       hovered = null
       return
     }
     tip = { x: px, y: py, left: px > w * 0.6 }
     hovered = i
   }
+
+  const limits = () => {
+    const lo = fitLogk(views.city) - 0.15
+    return [lo, lo + Math.log(16)]
+  }
+
+  // Keep the point under (px, py) fixed while changing scale by `factor` and shifting by (dx, dy) pixels.
+  function moveCamera(factor, px, py, dx = 0, dy = 0) {
+    const [lo, hi] = limits()
+    const k0 = Math.exp(cam.logk)
+    const logk = Math.min(hi, Math.max(lo, cam.logk + Math.log(factor)))
+    const k1 = Math.exp(logk)
+    const wx = (px - shiftX(0)) / k0
+    const wy = (py - shiftY(0)) / k0
+    const next = {
+      logk,
+      cx: wx - (px - w / 2 + dx) / k1,
+      cy: wy - (py - h / 2 + dy) / k1,
+    }
+    userCam = next
+    zoomed = true
+    hovered = null
+    Object.assign(camTarget, next)
+    Object.assign(cam, next)
+    tick++
+  }
+
+  function onDown(e) {
+    if (!explore) return inspect(e)
+    svgEl.setPointerCapture(e.pointerId)
+    pointers.set(e.pointerId, { x: e.clientX, y: e.clientY, x0: e.clientX, y0: e.clientY })
+    gesture = pointers.size === 2 ? pinchState() : null
+  }
+
+  const pinchState = () => {
+    const [a, b] = [...pointers.values()]
+    return { d: Math.hypot(a.x - b.x, a.y - b.y), x: (a.x + b.x) / 2, y: (a.y + b.y) / 2 }
+  }
+
+  function onMove(e) {
+    if (!explore) {
+      if (e.pointerType === 'mouse') inspect(e)
+      return
+    }
+    const p = pointers.get(e.pointerId)
+    if (!p) {
+      if (e.pointerType === 'mouse') inspect(e)
+      return
+    }
+    const box = svgEl.getBoundingClientRect()
+    if (pointers.size === 1) {
+      moveCamera(1, 0, 0, e.clientX - p.x, e.clientY - p.y)
+    } else if (gesture) {
+      p.x = e.clientX
+      p.y = e.clientY
+      const next = pinchState()
+      moveCamera(next.d / gesture.d, next.x - box.left, next.y - box.top, next.x - gesture.x, next.y - gesture.y)
+      gesture = next
+    }
+    p.x = e.clientX
+    p.y = e.clientY
+  }
+
+  function onUp(e) {
+    const p = pointers.get(e.pointerId)
+    pointers.delete(e.pointerId)
+    gesture = null
+    // A touch that barely moved is a tap: show that station.
+    if (explore && p && Math.hypot(e.clientX - p.x0, e.clientY - p.y0) < 6) inspect(e)
+  }
+
+  function onWheel(e) {
+    if (!explore) return
+    e.preventDefault()
+    const box = svgEl.getBoundingClientRect()
+    moveCamera(Math.exp(-e.deltaY * 0.0015), e.clientX - box.left, e.clientY - box.top)
+  }
+
+  const zoomBy = (factor) => moveCamera(factor, w / 2, h / 2)
+  function reset() {
+    userCam = null
+    zoomed = false
+    hovered = null
+    setCameraTarget()
+    start()
+  }
+  function toggleExplore() {
+    explore = !explore
+    pointers.clear()
+    hovered = null
+    if (!explore) reset()
+  }
+  function onKey(e) {
+    if (!explore) return
+    const step = 60
+    const keys = {
+      '+': () => zoomBy(1.4), '=': () => zoomBy(1.4), '-': () => zoomBy(1 / 1.4), '0': reset,
+      ArrowLeft: () => moveCamera(1, 0, 0, step, 0), ArrowRight: () => moveCamera(1, 0, 0, -step, 0),
+      ArrowUp: () => moveCamera(1, 0, 0, 0, step), ArrowDown: () => moveCamera(1, 0, 0, 0, -step),
+      Escape: toggleExplore,
+    }
+    if (keys[e.key]) {
+      e.preventDefault()
+      keys[e.key]()
+    }
+  }
+
+  $effect(() => {
+    if (!svgEl) return
+    svgEl.addEventListener('wheel', onWheel, { passive: false })
+    return () => svgEl.removeEventListener('wheel', onWheel)
+  })
 
   const info = $derived(hovered === null ? null : describe(hovered))
 </script>
@@ -234,9 +362,14 @@
     viewBox="0 0 {w} {h}"
     role="img"
     aria-label={label}
-    onpointermove={onPointer}
-    onpointerdown={onPointer}
-    onpointerleave={() => (hovered = null)}
+    class:explore
+    tabindex={explore ? 0 : -1}
+    onpointermove={onMove}
+    onpointerdown={onDown}
+    onpointerup={onUp}
+    onpointercancel={onUp}
+    onpointerleave={(e) => e.pointerType === 'mouse' && (hovered = null)}
+    onkeydown={onKey}
   >
     <g transform={worldTransform(tick)}>
       <g class="areas" aria-hidden="true">
@@ -269,6 +402,21 @@
     </g>
   </svg>
 
+  <div class="tools">
+    {#if explore}
+      <button type="button" onclick={() => zoomBy(1.4)} aria-label="Zoom in">+</button>
+      <button type="button" onclick={() => zoomBy(1 / 1.4)} aria-label="Zoom out">−</button>
+      <button type="button" onclick={reset} disabled={!zoomed} aria-label="Reset zoom">Reset</button>
+    {/if}
+    <button type="button" class="toggle" aria-pressed={explore} onclick={toggleExplore}>
+      {explore ? 'Done' : 'Explore map'}
+    </button>
+  </div>
+
+  {#if explore}
+    <p class="visually-hidden" role="status">Explore mode on. Drag or use arrow keys to pan, pinch or plus and minus to zoom, zero to reset, Escape to exit.</p>
+  {/if}
+
   {#if info}
     <div class="tip" class:left={tip.left} style="left:{tip.x}px; top:{tip.y}px" role="status">
       <strong>{info.name}</strong>
@@ -285,6 +433,7 @@
     display: block;
     overflow: hidden;
     touch-action: pan-y;
+    cursor: default;
     /* Soft edges, so a zoomed map fades out instead of being cut off. */
     --edge: 28px;
     -webkit-mask-image:
@@ -296,6 +445,32 @@
       linear-gradient(to bottom, transparent, #000 var(--edge), #000 calc(100% - var(--edge)), transparent);
     mask-composite: intersect;
   }
+
+  svg.explore { touch-action: none; cursor: grab; outline-offset: -3px; }
+  svg.explore:active { cursor: grabbing; }
+
+  .tools {
+    position: absolute;
+    top: 0.3rem;
+    right: 0.3rem;
+    z-index: 4;
+    display: flex;
+    gap: 0.3rem;
+  }
+  .tools button {
+    min-width: 2.25rem;
+    min-height: 2.25rem;
+    padding: 0 0.65rem;
+    border: 1px solid var(--rule);
+    border-radius: 999px;
+    background: rgb(246 241 231 / 0.92);
+    font-family: var(--sans);
+    font-size: 0.8rem;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  .tools button:disabled { opacity: 0.45; cursor: default; }
+  .tools .toggle[aria-pressed='true'] { background: var(--ink); color: var(--paper); border-color: var(--ink); }
 
   .areas path {
     fill: #efe7d6;

@@ -57,15 +57,16 @@
       id: 'night',
       paragraphs: [
         'At 4:30 in the morning, Chicago’s bike-share stations are nearly still.',
+        'Each dot represents a station, sized by the number of trips that begin there during an average weekday hour.',
       ],
-      small: 'Each dot is a station, sized by the trips that start there in an average hour. This is an average weekday, built from all 261 in the year.',
       alt: 'Map of Divvy stations at 4:30 am on an average weekday. Almost every station is small and pale.',
       scene: { kind: 'time', measure: 'dep', dayType: 'weekday', time: 4.5, controls: 'time', zoom: 'core' },
     },
     {
       id: 'play',
       paragraphs: [
-        'Then the commute begins, and activity builds downtown. By late afternoon, the city sees an even bigger rush of riders.',
+        'Then the commute begins. Activity builds through the morning, and by late afternoon, the rush is even bigger.',
+        'The city has its own rhythm. But not every part of Chicago moves to the same beat.',
       ],
       alt: 'Map of Divvy stations animating through an average weekday, with dark clusters downtown at about 8 am and 5 pm.',
       scene: { kind: 'time', measure: 'dep', dayType: 'weekday', time: 8, controls: 'time', autoplay: true, zoom: 'core' },
@@ -73,26 +74,31 @@
     {
       id: 'uneven',
       paragraphs: [
-        'But that activity isn’t spread evenly across Chicago.',
-        `The busiest tenth of stations, clustered downtown and along the lakefront, account for ${percent(conc.top10ShareOfStationStarts)} of the trips that begin at a recorded station. Half of those trips start at just ${conc.locationsForHalf} of ${number(conc.locationsWithStarts)} locations.`,
+        'That activity isn’t spread evenly across Chicago.',
+        `The busiest 10% of stations, many clustered downtown and along the lakefront, account for ${percent(conc.top10ShareOfStationStarts)} of trips that begin at a recorded station.`,
+        `Half of those trips start at just ${conc.locationsForHalf} of the ${number(conc.locationsWithStarts)} locations in the analysis.`,
+        `And even this map doesn’t tell the whole story. Roughly one in five trips has no recorded starting station, often because electric bikes can be left away from docks. Including those trips, the busiest tenth accounts for ${percent(conc.top10ShareOfAllCleanTrips)} of all rides.`,
+        'The concentration is striking. But it tells us where rides happened, not necessarily where everyone wanted to ride.',
       ],
-      small: `About one trip in five has no starting station (mostly e-bikes left away from a dock), so it isn’t on the map. Count those too and the busiest tenth still account for ${percent(conc.top10ShareOfAllCleanTrips)} of all trips. This shows where riding is concentrated, not where it is needed.`,
       alt: 'Map of every Divvy station, sized by trips per weekday. The busiest tenth, downtown and along the lakefront, are dark; the rest are faint. A chart shows the busiest tenth of stations account for about 60% of trips.',
       scene: { kind: 'total', measure: 'dep', dayType: 'weekday', controls: 'none', highlight: true, concentration: true, zoom: 'city' },
     },
     {
       id: 'tide',
-      title: 'On weekday mornings, trips flow toward the Loop',
       paragraphs: [
-        `Between 7 and 10 am, about ${facts.loopMorning} more trips end in the Loop than start there. The flow comes from neighborhoods like West Town, which sends out about ${facts.westTownMorning} more than it receives, and Lincoln Park, about ${facts.lincolnParkMorning}.`,
+        'I’ve spent plenty of time wondering where I could return a Divvy. But there’s another question hiding in the data: where are all those trips ending?',
+        'On weekday mornings, Divvy trips flow toward the Loop.',
+        `Between 7 and 10 am, about ${facts.loopMorning} more trips end in the Loop than begin there on an average weekday. In West Town, the opposite happens: about ${facts.westTownMorning} more trips begin than end. Lincoln Park sends out about ${facts.lincolnParkMorning} more than it receives.`,
       ],
-      small: 'Blue dots are stations where more trips end than start; coral dots are the reverse. These are net trips, not counts of bikes at a station.',
+      small: 'Blue stations receive more trips than they send out. Coral stations send out more than they receive. The map isn’t showing how many bikes are physically at each station. It’s showing the balance between recorded arrivals and departures.',
       alt: 'Map of net trips in the morning rush. Downtown stations are blue, receiving more trips than they send. Neighborhoods to the north and west are coral.',
       scene: { kind: 'time', measure: 'net', dayType: 'weekday', window: 'morning', controls: 'none', chart: true, notes: tideNotes, zoom: 'core' },
     },
     {
       id: 'midday',
-      paragraphs: ['By early afternoon, the imbalance fades. Trips in and out roughly cancel.'],
+      paragraphs: [
+        'By early afternoon, rides are still happening across Chicago, but arrivals and departures are more evenly matched in the central area.',
+      ],
       alt: 'Map of net trips at midday. Most stations are small and neutral.',
       scene: { kind: 'time', measure: 'net', dayType: 'weekday', window: 'midday', controls: 'none', chart: true, notes: [], zoom: 'core' },
     },
@@ -106,8 +112,12 @@
     {
       id: 'evening',
       paragraphs: [
-        `By evening, the pattern reverses. From 4 to 7 pm, the Loop sends out about ${facts.loopEvening} more trips than it receives, while neighborhoods that lost trips in the morning begin gaining them back. Lincoln Park takes in about ${facts.lincolnParkEvening} more than it sends.`,
-        `It isn’t only the Loop. Of the ${number(tide.flipStations)} stations that gained or lost at least ${tide.flipMinTrips} trips over the year in both rush hours, ${percent(tide.flipShare)} switched direction between morning and evening.`,
+        'By evening, the direction reverses.',
+        `Between 4 and 7 pm, the Loop sends out about ${facts.loopEvening} more trips than it receives. Lincoln Park, which lost trips in the morning, now gains about ${facts.lincolnParkEvening}.`,
+        'And this isn’t just a downtown phenomenon.',
+        `Of the ${number(tide.flipStations)} stations that gained or lost at least ${tide.flipMinTrips} trips over the year in both rush hours, ${percent(tide.flipShare)} reverse direction between the two.`,
+        'Stations that receive more trips than they send out in the morning tend to do the opposite in the evening.',
+        'The city isn’t simply becoming busier or quieter. The direction of its movement is changing.',
       ],
       alt: 'Map of net trips in the evening rush. The colors are reversed: downtown stations are coral and the neighborhoods are blue.',
       scene: { kind: 'time', measure: 'net', dayType: 'weekday', window: 'evening', controls: 'none', chart: true, notes: tideNotes, zoom: 'core' },
@@ -115,8 +125,9 @@
     {
       id: 'weekend',
       paragraphs: [
-        `On weekends, the reversal is much weaker. Across ${number(tide.stations)} stations, morning and evening net trips are strongly opposed on weekdays (correlation ${tide.pearson}) and only loosely so on weekends (${tide.weekendPearson}).`,
-        'That points to the weekday commute as a large part of the pattern, though the data can’t say who is riding or why.',
+        'On weekends, that near-mirror-image pattern is much weaker.',
+        'Without the same weekday commuting rhythm, trips follow a different schedule. The sharp morning peak fades, and riding builds more gradually toward the afternoon.',
+        'The contrast suggests that commuting plays an important role in shaping Divvy’s weekday movements, although the data doesn’t tell us precisely why any individual person rides.',
       ],
       alt: 'Map of net trips on a weekend afternoon. Dots are smaller and the blue and coral are mixed together, compared with the weekday rush hours.',
       scene: { kind: 'time', measure: 'net', dayType: 'weekend', window: 'weekend', controls: 'none', chart: false, notes: [], zoom: 'core' },
@@ -124,9 +135,9 @@
     {
       id: 'explore',
       paragraphs: [
-        'Weekday mornings and evenings are close to mirror images of each other.',
+        'On weekdays, morning and evening movements look remarkably similar in magnitude, but opposite in direction.',
       ],
-      small: 'Net flow counts trips, not bikes. Divvy crews also move bikes between stations, so this shows where trips start and end, not where bikes pile up.',
+      small: 'That pattern isn’t proof that individual bikes return to where they started. Divvy crews also move bikes between stations, and those movements aren’t captured here.',
       alt: 'Interactive map of net trips. Use the period buttons or the time slider to change the view.',
       scene: { kind: 'time', measure: 'net', dayType: 'weekday', window: 'morning', controls: 'explore', chart: true, notes: [], zoom: 'core' },
     },
@@ -441,12 +452,14 @@
       border-bottom: 1px solid var(--rule);
     }
     .panel { width: auto; align-self: stretch; gap: 0.45rem; }
-    .steps { grid-area: 1 / 1; position: relative; z-index: 1; padding: calc(52svh + 3vh) 0 40svh; }
-    .step { min-height: 48svh; align-items: center; }
+    /* The map owns the top of the screen, so text only needs room to pass beneath it. Spacing
+       between cards is padding, not a fixed height, so short lines don't leave a screen of blank. */
+    .steps { grid-area: 1 / 1; position: relative; z-index: 1; padding: calc(52svh + 2svh) 0 14svh; }
+    .step { min-height: 0; padding: 7svh 0; align-items: center; }
     .card h2 { font-size: 1.5rem; margin-bottom: 0.5rem; }
     .card p { font-size: 1rem; line-height: 1.45; margin-bottom: 0.7em; }
     .card .small { font-size: 0.9rem; }
-    .step.pause { min-height: 60svh; }
+    .step.pause { min-height: 0; padding: 16svh 0; }
     .step.pause .card p { font-size: 1.7rem; }
     .chart { display: none; }
   }
