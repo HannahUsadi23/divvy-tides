@@ -65,11 +65,11 @@
   </details>
 
   <details class="more">
-    <summary>How we counted</summary>
+    <summary>How I counted</summary>
     <ul>
       <li>
         <strong>Data.</strong> Divvy’s public trip history, {m.window.start} to {m.window.end}: {number(m.counts.rawTrips)}
-        trips. We removed {number(m.counts.removedTrips)} trips shorter than a minute or longer than a day,
+        trips. I removed {number(m.counts.removedTrips)} trips shorter than a minute or longer than a day,
         leaving {number(m.counts.cleanTrips)}. Times are Chicago local time.
       </li>
       <li>
